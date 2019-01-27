@@ -155,7 +155,7 @@ while not done:
     screen.blit(GreenSurface, (150, ((height + margin) * 8) + 70))
     screen.blit(BlueSurface, (150, ((height + margin) * 8) + 110))
 
-    pygame.draw.rect(screen, BLACK, [349, 539, 85, 34])
+    pygame.draw.rect(screen, BLACK, [349, 539, 85, 33])
     screen.blit(ResetSurface,(350, 540))    
     
     # --- Go ahead and update the screen with what we've drawn.
