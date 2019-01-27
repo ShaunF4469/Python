@@ -54,7 +54,7 @@ PALETTE [1][7] = CYAN
 PaintBrush = BLUE
     
 pygame.font.init()
-myfont = pygame.font.SysFont('Comic Sans MS', 30)
+myfont = pygame.font.SysFont('Times New Roman MS', 45)
 
 pygame.init()
  
@@ -142,8 +142,8 @@ while not done:
     pygame.draw.rect(screen, PaintBrush, [480 + margin, 480, 100, 100])
 
     # --- Draw a Reset button
-    pygame.draw.rect(screen, BLACK, [349, 529, 82, 45])
-    screen.blit(ResetSurface,(350, 530))
+    pygame.draw.rect(screen, BLACK, [349, 539, 85, 34])
+    screen.blit(ResetSurface,(350, 540))
     
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
@@ -152,4 +152,4 @@ while not done:
     clock.tick(60)
  
 # Close the window and quit.
-pygame.quit()0
+pygame.quit()
