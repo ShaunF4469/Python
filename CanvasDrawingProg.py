@@ -63,6 +63,9 @@ size = (600, 600)
 screen = pygame.display.set_mode(size)
 
 ResetSurface = myfont.render('Reset', False, (255, 255, 255), (255, 165, 0))
+RedSurface = myfont.render('Red = ', False, (0, 0, 0))
+BlueSurface = myfont.render('Blue = ', False, (0, 0, 0))
+GreenSurface = myfont.render('Green = ', False, (0, 0, 0))
  
 pygame.display.set_caption("Canvas")
  
@@ -141,9 +144,19 @@ while not done:
     pygame.draw.rect(screen, BLACK, [479 + margin, 479, 102, 102])
     pygame.draw.rect(screen, PaintBrush, [480 + margin, 480, 100, 100])
 
-    # --- Draw a Reset button
+    # --- Draw a Reset button and RGB Values
+    R,G,B = PaintBrush
+    RedSurface = myfont.render('Red = ' + str(R), False, (0, 0, 0), (255, 255, 255))
+    GreenSurface = myfont.render('Green = ' + str(G), False, (0, 0, 0), (255, 255, 255))
+    BlueSurface = myfont.render('Blue = ' + str(B), False, (0, 0, 0), (255, 255, 255))
+    pygame.draw.rect(screen, WHITE, [149, ((height + margin) * 8) + 29,
+                                     340, ((height + margin) * 8) + 160])
+    screen.blit(RedSurface, (150, ((height + margin) * 8) + 30))
+    screen.blit(GreenSurface, (150, ((height + margin) * 8) + 70))
+    screen.blit(BlueSurface, (150, ((height + margin) * 8) + 110))
+
     pygame.draw.rect(screen, BLACK, [349, 539, 85, 34])
-    screen.blit(ResetSurface,(350, 540))
+    screen.blit(ResetSurface,(350, 540))    
     
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
