@@ -28,7 +28,7 @@ margin = 10
 # Screen Zone constraints
 CanvasPos = ((margin + width) * 8, (margin + height) * 8)
 PalettePos = (600 - ((margin + width) * 2), (margin + height) * 8)
-ResetPos = (349, 529, 349 + 82, 529 + 45)
+ResetPos = (349, 539, 349 + 85, 539 + 34)
               
 # --- Screen-clearing code goes here
 CANVAS = [[BLACK]*8 for _ in range(8)]
