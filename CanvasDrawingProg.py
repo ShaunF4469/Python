@@ -1,4 +1,9 @@
 import pygame
+import board
+import adafruit_dotstar as dotstar
+
+# set matrix variable
+dots = dotstar.DotStar(board.SCK, board.MOSI, 64, brightness=0.50)
  
 # Define some colors
 BLACK = (0, 0, 0)
@@ -163,6 +168,11 @@ while not done:
  
     # --- Limit to 60 frames per second
     clock.tick(60)
+
+    # --- Send list to Matrix
+    for row in range(8):
+        for column in range(8):
+            dots[(column * 8) + row] = CANVAS[column][row]
  
 # Close the window and quit.
 pygame.quit()
