@@ -215,7 +215,7 @@ while not done:
     for row in range(8):
         for column in range(8):
             dots[(column * 8) + row] = CANVAS[column][row]
-    dots.size = Brightlevel / 10
+    dots.brightness = BrightLevel / 10
  
 # --- Close the window and quit.
 pygame.quit()
