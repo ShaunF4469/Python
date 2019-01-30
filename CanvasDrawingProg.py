@@ -2,13 +2,13 @@ import pygame
 import board
 import adafruit_dotstar as dotstar
 
-# set matrix variable
+# --- Set matrix variable
 dots = dotstar.DotStar(board.SCK, board.MOSI, 64, brightness=0.50)
  
-# Define some colors
+# --- Define some colors
 BLACK = (0, 0, 0)
 SILVER = (192, 192, 192)
-GRAY = (128, 128, 128)
+ORANGE = (255, 96, 0)
 WHITE = (255, 255, 255)
 MAROON = (128, 0, 0)
 RED = (255, 0, 0)
@@ -23,24 +23,31 @@ BLUE = (0, 0, 255)
 TEAL = (0, 128, 128)
 CYAN = (0, 255, 255)
 
-#Set Width and Height of each grid location
+# --- Set Width and Height of each grid location
 width = 45
 height = 45
 
-#Set Margin between cells
+# --- Set Margin between cells
 margin = 10
 
-# Screen Zone constraints
+# --- Variable used to hold brightness level
+BrightLevel = 3
+
+# --- Screen Zone constraints
 CanvasPos = ((margin + width) * 8, (margin + height) * 8)
 PalettePos = (600 - ((margin + width) * 2), (margin + height) * 8)
 ResetPos = (349, 539, 349 + 85, 539 + 34)
+MinusPos = [(margin * 2) + 2, (margin + height) * 8 + 92,
+            ((margin * 2) + 2) + 26, ((margin + height) * 8 + 92) + 26]
+PlusPos = [(margin * 2) + 52, (margin + height) * 8 + 92,
+           ((margin * 2) + 52) + 26, ((margin + height) * 8 + 92) + 26]
               
 # --- Screen-clearing code goes here
 CANVAS = [[BLACK]*8 for _ in range(8)]
     
 PALETTE = [[BLACK]*8 for _ in range(2)]
 PALETTE [0][0] = BLACK
-PALETTE [0][1] = GRAY
+PALETTE [0][1] = ORANGE
 PALETTE [0][2] = MAROON
 PALETTE [0][3] = PURPLE
 PALETTE [0][4] = GREEN
@@ -60,10 +67,11 @@ PaintBrush = BLUE
     
 pygame.font.init()
 myfont = pygame.font.SysFont('Times New Roman MS', 45)
+myfontSm = pygame.font.SysFont('Times New Roman MS', 25)
 
 pygame.init()
  
-# Set the width and height of the screen [width, height]
+# --- Set the width and height of the screen [width, height]
 size = (600, 600)
 screen = pygame.display.set_mode(size)
 
@@ -71,16 +79,20 @@ ResetSurface = myfont.render('Reset', False, (255, 255, 255), (255, 165, 0))
 RedSurface = myfont.render('Red = ', False, (0, 0, 0))
 BlueSurface = myfont.render('Blue = ', False, (0, 0, 0))
 GreenSurface = myfont.render('Green = ', False, (0, 0, 0))
+PlusSur = myfont.render('+', False, (0, 0, 0))
+MinusSur = myfont.render('-', False, (0, 0, 0))
+BrightnessSur = myfontSm.render('Brightness', False, (0, 0, 0))
+
  
 pygame.display.set_caption("Canvas")
  
-# Loop until the user clicks the close button.
+# --- Loop until the user clicks the close button.
 done = False
  
-# Used to manage how fast the screen updates
+# --- Used to manage how fast the screen updates
 clock = pygame.time.Clock()
 
-# Init screen
+# --- Init screen
 screen.fill(WHITE)
  
     # --- Drawing code should go here
@@ -109,6 +121,20 @@ while not done:
             pos[1] > ResetPos[1] and\
             pos[1] < ResetPos[3]:
                 CANVAS = [[BLACK]*8 for _ in range(8)]
+                print("Click ", pos, "Grid coordinates: ", row, column, CanvasPos)
+            elif pos[0] > MinusPos[0] and\
+            pos[0] < MinusPos[2] and\
+            pos[1] > MinusPos[1] and\
+            pos[1] < MinusPos[3] and\
+            BrightLevel > 0:
+                BrightLevel = BrightLevel - 1
+                print("Click ", pos, MinusPos)
+            elif pos[0] > PlusPos[0] and\
+            pos[0] < PlusPos[2] and\
+            pos[1] > PlusPos[1] and\
+            pos[1] < PlusPos[3] and\
+            BrightLevel < 10:
+                BrightLevel = BrightLevel + 1
                 print("Click ", pos, "Grid coordinates: ", row, column, CanvasPos)
             else:
                 
@@ -161,7 +187,23 @@ while not done:
     screen.blit(BlueSurface, (150, ((height + margin) * 8) + 110))
 
     pygame.draw.rect(screen, BLACK, [349, 539, 85, 33])
-    screen.blit(ResetSurface,(350, 540))    
+    screen.blit(ResetSurface,(350, 540))
+
+    # --- Draw Brightness controls
+    pygame.draw.rect(screen, BLACK, [margin - 1, (margin + height) * 8 + 30, 100, 100])
+    pygame.draw.rect(screen, WHITE, [margin, (margin + height) * 8 + 31, 98, 98])
+    screen.blit(BrightnessSur,((margin * 2) - 5, (margin + height) * 8 + 35))
+    
+    BrightLevelSur = myfont.render(str(BrightLevel), False, (0, 0, 0))
+    screen.blit(BrightLevelSur,((margin * 2) + 30, (margin + height) * 8 + 60))
+    
+    pygame.draw.rect(screen, BLACK, [margin * 2, (margin + height) * 8 + 90, 30, 30])
+    pygame.draw.rect(screen, WHITE, [(margin * 2) + 2, (margin + height) * 8 + 92, 26, 26])
+    screen.blit(MinusSur,((margin * 2) + 10, (margin + height) * 8 + 90))
+
+    pygame.draw.rect(screen, BLACK, [(margin * 2) + 50, (margin + height) * 8 + 90, 30, 30])
+    pygame.draw.rect(screen, WHITE, [(margin * 2) + 52, (margin + height) * 8 + 92, 26, 26])
+    screen.blit(PlusSur,((margin * 2) + 57, (margin + height) * 8 + 88))
     
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
@@ -173,6 +215,7 @@ while not done:
     for row in range(8):
         for column in range(8):
             dots[(column * 8) + row] = CANVAS[column][row]
+    dots.size = Brightlevel / 10
  
-# Close the window and quit.
+# --- Close the window and quit.
 pygame.quit()
